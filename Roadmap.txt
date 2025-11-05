@@ -1,0 +1,25 @@
+Rendus Project:
+
+1) Présentation ( 10-15 slides): 
+	Présente votre solution, vos choix techniques, vos résultats, et l’impact.
+
+2) Démo vidéo:(5 min sans son): 
+	Dashboard, pipeline de modèle, prédiction finale (sur watsonx)
+
+3) Repo GitHub: 
+	Code, pipeline,ReadMe,certficats,instructions de lancement
+
+4) Doc qui explique : 
+(Le problème,Le dataset,pipeline,méthodes,Résultats,Limitations,Améliorations possibles)
+
+Deadline:
+
+Mercredi 18h: Finir EDA + Table de Faits propre
+Jeudi midi: Faire tourner les modèles + smote + PCA + Commencer la pipeline finale ( exxayer shape lime + voting classifier et si possible stcking)
+Jeudi 18h: Pipeline finale faite !  + Initier le doc + Initier Dashboard pbix + 
+	   Initier la présentation + Initier la vidéo
+Vendredi: Finir le rendu
+
+
+	
+	
