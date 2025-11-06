@@ -28,25 +28,28 @@ Ce projet contient :
 
 ## Structure du projet
 
-1. **Exploration des données (EDA)**  
-   - Vérification des valeurs manquantes
-   - Formatage des colonnes
-   - Statistiques descriptives  
-   - Visualisations principales  
-   - Obtention d'un dataframe merged avec l'ensemble des données d'entrée 
+### Exploration des données (EDA)
+- **Vérification des valeurs manquantes** : identification des colonnes contenant des données manquantes et traitement approprié.  
+- **Formatage des colonnes** : uniformisation des types et noms des colonnes pour faciliter les analyses.  
+- **Statistiques descriptives** : calcul des principales mesures (moyenne, médiane, écart-type, etc.) pour mieux comprendre la distribution des variables.  
+- **Visualisations principales** : graphiques et représentations visuelles permettant d’identifier tendances, anomalies et relations entre variables.  
+- **Obtention d’un dataframe merged** : fusion de l’ensemble des données d’entrée pour disposer d’un jeu de données complet et cohérent.
 
-2. **Analyse avancée et transformations**  
-   - Préparation des données  
-   - Encodage des variables catégorielles  
-   - Analyse des corrélations et PCA  
-Cette partie nous a aidé à guider nos choix pour les modèles de prédictions.
+### Analyse avancée et transformations
+- **Préparation des données** : nettoyage final et organisation des données pour la modélisation.  
+- **Encodage des variables catégorielles** : transformation des colonnes catégorielles en variables numériques exploitables par les modèles.  
+- **Analyse des corrélations et PCA** : étude des relations entre variables et réduction de dimension pour guider les choix des modèles de prédiction.
 
-3. **Modélisation et conclusions**  
-Une partie de la modélisation a été faite sur python dans la continuité du travail précédent mais également sur la plateforme IBM Watsonx - afin de découvrir l'outil et comprendre comment cet outil serait un facilitateur, comparer les performances des différents modèles et surtout voir le gain de temps et d'efficacité (avec le dataframe merged mais également avec celui avant le merge afin de comparer les performances des deux modèle. Ce choix a été fait afin de voir si on pouvait obtenir un modèle quasi autant perfomrant sans les colonnes "en plus" - si c'est le cas, on pourrait utiliser plus facilement le dataframe d'évaluation pour la démonstration que nous avons souhaitée. )
+### Modélisation et conclusions
+- Une partie de la modélisation a été réalisée en **Python**, dans la continuité de l’EDA, et également sur la **plateforme IBM Watsonx**.  
+- L’objectif était de découvrir l’outil, comprendre comment il peut faciliter le workflow, comparer les performances des modèles et évaluer le gain de temps et d’efficacité.  
+- Deux jeux de données ont été utilisés :  
+  - **Dataframe merged** : avec toutes les colonnes disponibles.  
+  - **Dataframe avant fusion** : afin de tester si un modèle performant peut être obtenu sans certaines colonnes supplémentaires.  
+- Cette démarche permet de déterminer si un modèle quasi aussi performant peut être utilisé avec un jeu de données plus simple pour la démonstration.
 
-   - Sélection des modèles  
-   - Evaluation des performances  
+### Sélection des modèles
+- Identification et choix des modèles les plus pertinents pour la prédiction.  
 
-
----
-
+### Évaluation des performances
+- Mesure et comparaison des performances des modèles sélectionnés afin de déterminer le meilleur candidat pour la mise en production ou la démonstration.
