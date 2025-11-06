@@ -1,4 +1,4 @@
-# HACKATON IBM 19 - Analyse de données
+# HACKATON IBM 19 - Finance track
 
 Bienvenue sur le dépôt du projet **HACKATHON IBM 19**.  
 Ce projet contient : 
