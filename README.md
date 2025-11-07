@@ -6,9 +6,8 @@ Ce projet contient :
 2. la vidéo de démo requise
 3. un dossier de travail avec : 
    - des notebooks Jupyter pour le prétraitement et l'analyse exploratoire des données dans le cadre de l'hackathon.
-   - des les données en .csv
+   - les données en .csv
    - un notebook avec les différents modèles de prédiction
-   - des exports des modèles / visu de watsonx (à confirmer)
 
 ---
 
