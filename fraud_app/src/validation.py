@@ -3,13 +3,11 @@ from typing import Dict, Any
 import pandas as pd
 from .ingestion import to_datetime, parse_amount, normalize_use_chip, to_str, clean_zip
 
-def validate_and_normalize(df_raw: pd.DataFrame, schema: Dict[str, Any], debug: bool = False):
+def validate_and_normalize(df_raw: pd.DataFrame, schema: Dict[str, Any]):
     """
     Valide le schéma et normalise les colonnes clés.
     Retourne (df_norm, report) où report = {errors[], warnings[], info{}}.
     """
-    if debug:
-        print("[VALIDATE] colonnes d'entrée :", list(df_raw.columns))
 
     report = {"errors": [], "warnings": [], "info": {}}
     df = df_raw.copy()
@@ -20,11 +18,9 @@ def validate_and_normalize(df_raw: pd.DataFrame, schema: Dict[str, Any], debug: 
     extra = [c for c in df.columns if c not in required]
     if missing:
         report["errors"].append(f"Colonnes manquantes : {missing}")
-        if debug: print("[VALIDATE][ERROR] missing:", missing)
         return df_raw, report
     if extra:
         report["warnings"].append(f"Colonnes supplémentaires détectées : {extra} (tolérées)")
-        if debug: print("[VALIDATE][WARN] extra:", extra)
 
     # 2) Casts/normalisation
     for col in ["transaction_id", "client_id", "card_id", "merchant_id", "merchant_city", "merchant_state", "zip", "mcc"]:
@@ -70,7 +66,6 @@ def validate_and_normalize(df_raw: pd.DataFrame, schema: Dict[str, Any], debug: 
     report["info"]["amount"] = {k: (None if pd.isna(v) else float(v)) for k, v in amt_desc.items()}
     report["info"]["negatives"] = int((df["amount"] < 0).sum())
 
-    if debug:
-        print("[VALIDATE] colonnes normalisées :", list(df.columns))
+
 
     return df, report

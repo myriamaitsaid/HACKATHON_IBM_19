@@ -13,12 +13,13 @@ from src.ingestion import read_csv_safely
 from src.summary import render_dataset_summary
 from src.inference import load_joblib_model, run_inference, simulate_predictions
 from src.synthese import render_synthese
+from src.investigation import render_investigation  # <-- import en haut avec les autres
 
 # --- modèle en dur (tu peux adapter le nom) ---
 MODEL_PATH = os.path.join(ROOT, "models", "fraud_model.joblib")
 THRESHOLD = 0.50
 
-st.set_page_config(page_title="Sentinelle Paiements", page_icon="🛡️", layout="wide")
+st.set_page_config(page_title="Fraude", page_icon="🛡️", layout="wide")
 
 # ---------- Styles (widgets & dark premium, déjà utilisés dans Page 1) ----------
 st.markdown("""
@@ -51,45 +52,29 @@ def load_schema() -> dict:
 SCHEMA = load_schema()
 
 # ---------- Onglets ----------
-tab1, tab2 = st.tabs(["1) Import & validation", "2) Synthèse du risque"])
+tab1, tab2, tab3 = st.tabs(["1) Import & validation", "2) Synthèse du risque", "3) Investigation & Export"])
 
 # ===================== TAB 1 =====================
 with tab1:
-    st.title("🛡️ Sentinelle Paiements — Import & validation")
-    st.caption("Import CSV → contrôle du schéma → normalisation → widgets de résumé (sans graphique).")
+    st.title("Fraude — Import & validation")
 
-    # Options
-    c1, c2, _ = st.columns([1,1,6])
-    with c1: show_seconds = st.toggle("Afficher les heures", value=False, key="opt_seconds")
-    with c2: debug = st.toggle("Mode debug", value=False, key="opt_debug")
 
     # Upload
     st.subheader("1️⃣ Importer et valider les données")
     uploaded = st.file_uploader("Déposez votre fichier CSV de transactions", type=["csv"], key="csv_upload")
-    use_sample = st.checkbox("Utiliser un fichier d'exemple (serveur)", value=False)
 
     df_raw = None
     if uploaded is not None:
         df_raw = read_csv_safely(uploaded)
-    elif use_sample:
-        sample_path = os.path.join(ROOT, "..", "evaluation_features.csv")
-        try:
-            df_raw = pd.read_csv(sample_path)
-            st.info(f"Fichier d'exemple chargé : {os.path.basename(sample_path)}")
-        except Exception:
-            st.warning("Aucun fichier d'exemple disponible.")
 
     if df_raw is None:
         st.info("Déposez un CSV (ou cochez l'exemple) pour commencer.")
     else:
-        if debug:
-            st.caption("🔎 DEBUG — Colonnes brutes"); st.write(list(df_raw.columns))
-            print("[APP][RAW] columns:", list(df_raw.columns))
 
         st.success(f"Fichier chargé : {df_raw.shape[0]:,} lignes × {df_raw.shape[1]} colonnes")
 
         with st.spinner("Validation & normalisation en cours..."):
-            df_norm, report = validate_and_normalize(df_raw, SCHEMA, debug=debug)
+            df_norm, report = validate_and_normalize(df_raw, SCHEMA)
 
         errors = report.get("errors", [])
         warnings = report.get("warnings", [])
@@ -104,15 +89,12 @@ with tab1:
             st.warning("Points à vérifier :")
             for w in warnings: st.markdown(f"- {w}")
 
-        if debug:
-            st.caption("🔎 DEBUG — Colonnes normalisées"); st.write(list(df_norm.columns))
-            print("[APP][NORM] columns:", list(df_norm.columns))
 
         with st.expander("Aperçu des données (normalisées)", expanded=False):
             st.dataframe(df_norm.head(50), use_container_width=True)
 
         st.subheader("Résumé du dataset")
-        render_dataset_summary(df_norm, report, show_seconds=show_seconds, debug=debug)
+        render_dataset_summary(df_norm, report)
 
         # --- Lancer l'analyse : inférence OU simulation 5% ---
         run_btn = st.button("🚀 Lancer l’analyse", type="primary", disabled=bool(errors))
@@ -133,7 +115,6 @@ with tab1:
                 run_meta["model_version"] = "joblib:loaded"
                 st.success("Inférence OK (modèle en dur).")
             except Exception as e:
-                st.info(f"Mode simulation (5%) activé : {e}")
                 df_pred = simulate_predictions(df_norm, rate=0.05, seed=2025)
                 run_meta["model_version"] = "simulation_5pct"
 
@@ -150,7 +131,6 @@ with tab1:
 # ===================== TAB 2 =====================
 with tab2:
     st.title("📊 Synthèse du risque")
-    st.caption("Vue exécutive du périmètre filtré. Pas de jargon ML — lecture seule métier.")
 
     if "df_result" not in st.session_state:
         st.info("Charge et lance l’analyse dans l’onglet « 1) Import & validation ».")
@@ -161,3 +141,15 @@ with tab2:
 
     # rendu complet de la page 2
     render_synthese(df_result, run_meta)
+
+
+
+# ===================== TAB 3 =====================
+with tab3:
+    st.title("🔎 Investigation & Export")
+    if "df_result" not in st.session_state:
+        st.info("Charge et lance l’analyse dans l’onglet « 1) Import & validation », puis consulte la synthèse (onglet 2).")
+        st.stop()
+    df_result = st.session_state["df_result"]
+    run_meta = st.session_state.get("run_meta", {})
+    render_investigation(df_result, run_meta)

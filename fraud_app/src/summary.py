@@ -2,8 +2,8 @@ from __future__ import annotations
 import streamlit as st
 import pandas as pd
 
-def _fmt_dt(x, show_seconds: bool) -> str:
-    fmt = "%Y-%m-%d %H:%M:%S" if show_seconds else "%Y-%m-%d"
+def _fmt_dt(x) -> str:
+    fmt = "%Y-%m-%d"
     try:
         return pd.to_datetime(x).strftime(fmt)
     except Exception:
@@ -34,10 +34,7 @@ def _widget(value: str, label: str, color_class: str) -> None:
 
 def render_dataset_summary(
     df: pd.DataFrame,
-    report: dict,
-    *,
-    show_seconds: bool = False,
-    debug: bool = False
+    report: dict
 ) -> None:
     info = report.get("info", {})
     period = info.get("period", {})
@@ -48,8 +45,8 @@ def render_dataset_summary(
     total_amt = float(df["amount"].sum(skipna=True))
     median_amt = (amt.get("50%") or 0)
 
-    start = _fmt_dt(period.get("min"), show_seconds)
-    end = _fmt_dt(period.get("max"), show_seconds)
+    start = _fmt_dt(period.get("min"))
+    end = _fmt_dt(period.get("max"))
     period_txt = f"{start} → {end}" if start != "—" and end != "—" else "—"
 
     # --- Widgets 2x2 (2 colonnes, plusieurs lignes) ---
@@ -68,5 +65,3 @@ def render_dataset_summary(
     st.markdown(f'<div class="unique">Marchands uniques : {_fmt_int(df["merchant_id"].nunique())}</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    if debug:
-        print("[SUMMARY] widgets affichés : rows/period/total/median/negatives + uniques")

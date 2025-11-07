@@ -278,7 +278,6 @@ def render_synthese(df_result: pd.DataFrame, run_meta: Optional[Dict] = None) ->
 
     # ---------- Barre de filtres ----------
     st.subheader("Synthèse du risque")
-    st.caption("Aide à la décision — une revue humaine reste nécessaire.")
 
     dmin = pd.to_datetime(df["date_parsed"]).min() if "date_parsed" in df.columns else None
     dmax = pd.to_datetime(df["date_parsed"]).max() if "date_parsed" in df.columns else None
