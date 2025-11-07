@@ -48,7 +48,14 @@ Ce projet contient :
 - Cette démarche permet de déterminer si un modèle quasi aussi performant peut être utilisé avec un jeu de données plus simple pour la démonstration.
 
 ### Sélection des modèles
-- Identification et choix des modèles les plus pertinents pour la prédiction.  
+- Identification et choix des modèles les plus pertinents pour la prédiction.
+- Sur Watsonx, nous avons testé tous les modèles de classification disponibles en sélectionnant la métrique de recall comme critère principal. Cela inclut notamment la régression linéaire, la régression logistique, les forêts aléatoires, et les autres modèles proposés automatiquement par la plateforme.
+- En parallèle, sur Python en local, nous avons évalué plusieurs modèles :
+   - SVM (avec SMOTE, Borderline-SMOTE et sans SMOTE),
+   - Random Forest (avec SMOTE, Borderline-SMOTE et sans SMOTE),
+   - AdaBoost (avec et sans PCA, avec et sans SMOTE).
+   - XGBoost (avec et sans PCA, avec et sans SMOTE).
+ 
 
 ### Évaluation des performances
 - Mesure et comparaison des performances des modèles sélectionnés afin de déterminer le meilleur candidat pour la mise en production ou la démonstration.
