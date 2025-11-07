@@ -9,6 +9,7 @@ Ce projet contient :
    - les données en .csv
    - un notebook avec les différents modèles de prédiction
 
+Voici le lien de la vidéo MVP : https://drive.google.com/drive/folders/1Jd0pp3bnq1gFS0Snbb9IR-eOpDVGqXaa?usp=drive_link
 ---
 
 ## Contenu du dossier de travail
