@@ -22,6 +22,8 @@ Ce projet contient :
 | `prediction.ipynb` | construction des modèles de prédiction|
 | `data/raw` | dossier pour les fichiers de données initiaux|
 | `data/clean` | dossier pour les fichiers de données propres|
+| `fraud_app` | dossier pour l'application streamlit|
+
 
 ---
 
